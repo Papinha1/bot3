@@ -17,10 +17,8 @@ client.on('message', msg => {
     if (!msg.content.startsWith(prefix))return;
     const args = msg.content.slice(prefix.length).trim().split(/ +/);
     const commandName = args.shift().toLowerCase();
-    if (!client.commands.has(commandName)){
-        msg.channel.send('uwu');
-    }
-    const command = client.commands.get(commandName);
+    const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+    if (!command)return;
     try{
         command.execute( msg , args );
     }
